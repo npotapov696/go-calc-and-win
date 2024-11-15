@@ -53,8 +53,14 @@ func getUserAttack() int {
 	total := 0
 
 	for i := 0; i < 5; i++ {
-		inputAttack := input("Введи тип атаки: ")
-
+		var inputAttack string
+		for {
+			inputAttack = input("Введи тип атаки: ")
+			if inputAttack == "lite" || inputAttack == "mid" || inputAttack == "hard" {
+				break
+			}
+			fmt.Println("Неизвестный тип атаки: \"" + inputAttack + "\". Повторите ввод.")
+		}
 		var attackValue int
 		switch inputAttack {
 		case "lite":
@@ -68,7 +74,7 @@ func getUserAttack() int {
 			continue
 		}
 		fmt.Println("Количество очков твоей атаки:", attackValue)
-		total += 1
+		total += attackValue
 	}
 	return total
 }
@@ -84,7 +90,7 @@ func runGame() bool {
 		fmt.Println("В этот раз не повезло :( Бой проигран.")
 	}
 	answer := input("Чтобы сыграть ещё раз, введи букву [y] или [Y]: ")
-	return answer == "Y"
+	return answer == "Y" || answer == "y"
 }
 
 func main() {
@@ -105,6 +111,10 @@ hard — урон от 30 до 40 очков.
 `
 	fmt.Println(intro)
 
-	for runGame() {
+	for {
+		if !runGame() {
+			break
+		}
+		fmt.Print("\n\n")
 	}
 }
